@@ -1,6 +1,8 @@
 import uuid
 import pika
 
+from metro_request_enum import MetroRequest
+
 
 class MetroClient:
     def __init__(self):
@@ -37,3 +39,24 @@ class MetroClient:
         while self.response is None:
             self.connection.process_data_events()
         return self.response.decode('utf-8')
+
+    def add_line(self, color: str):
+        self.call([MetroRequest.ADD_LINE.value, [color]])
+
+    def add_station(self, name: str, line_id: int, open: str, close: str):
+        self.call([MetroRequest.ADD_STATION.value, [name, line_id, open, close]])
+
+    def delete_station(self, id: int):
+        self.call([MetroRequest.DELETE_STATION.value, [id]])
+
+    def get_line_stations_list(self, id: int):
+        return eval(self.call([MetroRequest.LIST_OF_LINE_STATIONS.value, [id]]))
+
+    def get_lines_list(self):
+        return eval(self.call([MetroRequest.LIST_OF_LINES.value, []]))
+
+    def get_stations_list(self):
+        return eval(self.call([MetroRequest.LIST_OF_STATIONS.value, []]))
+
+    def reset_db(self):
+        self.call([MetroRequest.RESET_DB.value, []])

@@ -1,7 +1,7 @@
 from client.metro_client import MetroClient
-from metro_request_enum import MetroRequest
 
 metro_client = MetroClient()
 
-response = metro_client.call([MetroRequest.LIST_OF_LINES.value, []])
+metro_client.add_line('Pink')
+response = metro_client.get_lines_list()
 print(response)

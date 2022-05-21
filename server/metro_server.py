@@ -36,6 +36,12 @@ class MetroServer:
                 response = self.metro.get_line_stations(request_data[0])
             case MetroRequest.LIST_OF_LINES:
                 response = self.metro.get_lines_list()
+            case MetroRequest.LIST_OF_STATIONS:
+                response = self.metro.get_stations_list()
+            case MetroRequest.RESET_DB:
+                self.metro.connection.cursor().execute("DROP TABLE metro_lines, metro_stations")
+                self.metro.connection.commit()
+                self.metro.init_tables()
 
         ch.basic_publish(exchange='',
                          routing_key=props.reply_to,

@@ -130,3 +130,22 @@ class Metro:
             result.append((station[0], station[1], str(station[2]), str(station[3]), station[4]))
 
         return result
+
+    def get_stations_list(self, row_count=100):
+        with self.connection.cursor() as cursor:
+            select_station_list_query = "SELECT * FROM metro_stations LIMIT %s"
+            select_station_list_val = row_count
+            cursor.execute(select_station_list_query, select_station_list_val)
+            stations = cursor.fetchall()
+
+        result = []
+
+        for station in stations:
+            result.append((station[0], station[1], str(station[2]), str(station[3]), station[4]))
+
+        return result
+
+    def reset_db(self):
+        self.connection.cursor().execute("DROP TABLE metro_lines, metro_stations")
+        self.connection.commit()
+        self.init_tables()
