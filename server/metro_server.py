@@ -13,7 +13,7 @@ class MetroServer:
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue='metro_queue')
         self.channel.basic_qos(prefetch_count=1)
-        self.channel.basic_consume(queue='rpc_queue', on_message_callback=self.on_request)
+        self.channel.basic_consume(queue='metro_queue', on_message_callback=self.on_request)
 
     def on_request(self, ch, method, props, body):
         print(body.decode('utf-8'))
